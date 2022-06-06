@@ -34,7 +34,11 @@ jobs:
           environment:
             PYTHONPATH: /home/circleci/project/
           command: coverage run -m unittest tests.py
-      - run: coverage report
+      - run:
+          working_directory: ~/project/tests/
+          environment:
+            PYTHONPATH: /home/circleci/project/
+          command: coverage report
 
   lint:
 
