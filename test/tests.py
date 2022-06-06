@@ -1,5 +1,4 @@
-import requests
-import app
+from src import app
 import unittest
 
 
