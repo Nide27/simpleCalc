@@ -1,4 +1,4 @@
-from src import app
+import app
 import unittest
 
 
