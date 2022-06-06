@@ -28,6 +28,12 @@ jobs:
           environment:
             PYTHONPATH: /home/circleci/project/
           command: python -m unittest discover -p "tests.py"
+      - run: pip install coverage
+      - run:
+          working_directory: ~/project/tests/
+          environment:
+            PYTHONPATH: /home/circleci/project/
+          command: coverage run -m unittest tests.py
 
   lint:
 
