@@ -29,12 +29,13 @@ jobs:
             PYTHONPATH: /home/circleci/project/
           command: python -m unittest discover -p "tests.py"
 
-    lint:
-      docker:
-        - image: cimg/python:3.10.2
-      steps:
-        name: run lint
-        command: make lint
+  lint:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - run:
+          name: run lint
+          command: make lint
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
