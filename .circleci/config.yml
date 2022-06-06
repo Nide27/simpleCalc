@@ -43,7 +43,6 @@ jobs:
           command: coverage report
 
   lint:
-
     docker:
       - image: cimg/python:3.10.2
     steps:
@@ -63,5 +62,7 @@ jobs:
 workflows:
   backend:
     jobs:
-      - build-and-test
       - lint
+      - build-and-test:
+          requires:
+            - lint
