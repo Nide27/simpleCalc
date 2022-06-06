@@ -35,10 +35,6 @@ jobs:
           # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
           # pip-dependency-file: tests-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and tests requirements.
       - run:
-          override: 
-            - py.test /home/circleci/project/tests
-          environment:
-            PYTHONPATH: /home/circleci/project/
           name: Run tests
           # This assumes pytest is installed via the install-package step above
           command: pytest tests/
