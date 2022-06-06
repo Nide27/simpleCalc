@@ -33,9 +33,10 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     steps:
-      - run:
+      - run: pip install --user pylint
+      - run:    
           name: run lint
-          command: make lint
+          command: pylint
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
