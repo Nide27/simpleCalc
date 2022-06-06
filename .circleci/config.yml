@@ -30,16 +30,18 @@ jobs:
           command: python -m unittest discover -p "tests.py"
 
   lint:
+    
     docker:
       - image: cimg/python:3.10.2
     steps:
+      - checkout
       - run: pip install --user pylint
       - run:    
           name: Run lint
           working_directory: ~/project/src
           environment:
             PYTHONPATH: /home/circleci/project/
-          command: pylint app
+          command: pylint src
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
