@@ -37,6 +37,8 @@ jobs:
       - run:
           name: Run tests
           working_directory: ~/project/tests/
+          environment:
+            PYTHONPATH: /home/circleci/project/src
           # This assumes pytest is installed via the install-package step above
           command: python -m unittest discover -p "tests.py"
 
