@@ -36,9 +36,9 @@ jobs:
       - run: pip install --user pylint
       - run:    
           name: Run lint
-          working_directory: ~/project/
+          working_directory: ~/project/src
           environment:
-            PYTHONPATH: /home/circleci/project/src
+            PYTHONPATH: /home/circleci/project/
           command: pylint app.py
 
 # Invoke jobs via workflows
