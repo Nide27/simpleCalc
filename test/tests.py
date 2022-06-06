@@ -1,22 +1,28 @@
 import requests
+import app
 import unittest
 
 
 class MyTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app.app.test_client()
+        self.app.testing = True
+
     def test_addition(self):
-        response = requests.get('http://127.0.0.1:5000/api/add?num1={}&num2={}'.format(5, 8))
+        response = self.app.get('/api/add?num1={}&num2={}'.format(5, 8))
         self.assertEqual(response.text, "13")
 
     def test_subtract(self):
-        response = requests.get('http://127.0.0.1:5000/api/subtract?num1={}&num2={}'.format(6, 3))
+        response = self.app.get('/api/subtract?num1={}&num2={}'.format(6, 3))
         self.assertEqual(response.text, "3")
 
     def test_multiply(self):
-        response = requests.get('http://127.0.0.1:5000/api/multiply?num1={}&num2={}'.format(6, 2))
+        response = self.app.get('/api/multiply?num1={}&num2={}'.format(6, 2))
         self.assertEqual(response.text, "12")
 
     def test_divide(self):
-        response = requests.get('http://127.0.0.1:5000/api/divide?num1={}&num2={}'.format(6, 2))
+        response = self.app.get('/api/divide?num1={}&num2={}'.format(6, 2))
         self.assertEqual(response.text, "3.0")
 
 
