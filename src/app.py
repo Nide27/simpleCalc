@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 
 @app.route('/api/add', methods=['GET'])
-def add():  # put application's code here
+def add():
     num1 = request.args.get("num1")
     num2 = request.args.get("num2")
     num1 = int(num1)
@@ -16,7 +16,7 @@ def add():  # put application's code here
 
 
 @app.route('/api/subtract', methods=['GET'])
-def subtract():  # put application's code here
+def subtract():
     num1 = request.args.get("num1")
     num2 = request.args.get("num2")
     num1 = int(num1)
@@ -28,7 +28,7 @@ def subtract():  # put application's code here
 
 
 @app.route('/api/multiply', methods=['GET'])
-def multiply():  # put application's code here
+def multiply():
     num1 = request.args.get("num1")
     num2 = request.args.get("num2")
     num1 = int(num1)
@@ -40,7 +40,7 @@ def multiply():  # put application's code here
 
 
 @app.route('/api/divide', methods=['GET'])
-def divide():  # put application's code here
+def divide():
     num1 = request.args.get("num1")
     num2 = request.args.get("num2")
     num1 = int(num1)
