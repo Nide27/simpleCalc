@@ -15,7 +15,6 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     steps:
-      - checkout
       - python/install-packages:
           pkg-manager: pip
       - run: pip install coverage
@@ -43,13 +42,14 @@ jobs:
       - image: cimg/python:3.10.2
     steps:
       - checkout
-      - run: pip install -r requirements/dev.txt
+      - python/install-packages:
+          pkg-manager: pip
 
   lint:
     docker:
       - image: cimg/python:3.10.2
     steps:
-      - checkout
+  
       - python/install-packages:
             pkg-manager: pip
       - run: pip install --user pylint
