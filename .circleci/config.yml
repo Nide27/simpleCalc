@@ -73,7 +73,10 @@ jobs:
           command: |
             apk add --no-cache py-pip=9.0.0-r1
             pip install docker-compose==1.15.0
-      - deploy:
+      - run:
+          name: Build Docker image
+          command: docker build -t $DOCKERHUB_USERNAME/conint_backend:latest .
+      - run:
           name: Push application Docker image
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
