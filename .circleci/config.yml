@@ -11,10 +11,11 @@ docker-publisher:
       password: $DOCKERHUB_PASSWORD
   
 jobs:
-  build-and-test:
+  test:
     docker:
       - image: cimg/python:3.10.2
     steps:
+      - checkout
       - python/install-packages:
           pkg-manager: pip
       - run: pip install coverage
@@ -49,7 +50,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     steps:
-  
+      - checkout
       - python/install-packages:
             pkg-manager: pip
       - run: pip install --user pylint
@@ -64,10 +65,9 @@ workflows:
   backend:
     jobs:
       - lint
-      - build-and-test:
+      - test:
           requires:
             - lint
       - build:
           requires:
-            - lint
-            - build-and-test
+            - test
