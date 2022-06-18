@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   python: circleci/python@1.5.0
+  docker: circleci/docker@2.1.2
 docker-publisher:
   environment:
     IMAGE_NAME: conint_backend
@@ -61,6 +62,29 @@ jobs:
 #            PYTHONPATH: /home/circleci/project/
           command: pylint -rn src --disable=missing-docstring
 
+  deploy:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - setup_remote_docker
+      - run:
+        # installs a docker client that will be used to run the docker commands
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run:
+          name: Build Docker image
+          command: docker build -t nide27/conint_backend:latest .
+      - run:
+          name: Push to Docker Hub
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker push nide27/conint_backend:latest
+
 workflows:
   backend:
     jobs:
@@ -71,3 +95,6 @@ workflows:
       - build:
           requires:
             - test
+      - deploy:
+          requires:
+            - build
