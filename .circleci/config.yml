@@ -1,6 +1,15 @@
 version: 2.1
 orbs:
   python: circleci/python@1.5.0
+executors:
+  docker-publisher:
+    environment:
+      IMAGE_NAME: conint_backend
+      docker: # Each job requires specifying an executor (either docker, macos, or machine), see
+      — image: circleci/python:latest
+      auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_PASSWORD
 
 jobs:
   build-and-test:
@@ -45,6 +54,18 @@ jobs:
 #            PYTHONPATH: /home/circleci/project/
           command: pylint -rn src --disable=missing-docstring
 
+    deploy:
+      executor: docker-publisher
+        steps:
+        — checkout
+        — setup_remote_docker
+        — run:
+        name: Publish Docker Image to Docker Hub
+        command: |
+        echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” — password-stdin
+        docker build -t $IMAGE_NAME .
+        docker push $IMAGE_NAME:latest
+
 workflows:
   backend:
     jobs:
@@ -52,3 +73,7 @@ workflows:
       - build-and-test:
           requires:
             - lint
+      - deploy:
+          requires:
+            - lint
+            - build-and-test
