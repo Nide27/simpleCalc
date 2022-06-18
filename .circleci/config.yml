@@ -77,8 +77,6 @@ jobs:
           name: Push application Docker image
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker tag dockerapp_dockerapp $DOCKERHUB_USERNAME/conint_backend:$CIRCLE_SHA1
-            docker tag dockerapp_dockerapp $DOCKERHUB_USERNAME/conint_backend:latest
             docker push $DOCKERHUB_USERNAME/conint_backend:$CIRCLE_SHA1
             docker push $DOCKERHUB_USERNAME/conint_backend:latest
 
