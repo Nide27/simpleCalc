@@ -75,7 +75,7 @@ jobs:
             pip install docker-compose==1.15.0
       - run:
           name: Build Docker image
-          command: docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAMEd:latest .
+          command: docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
       - run:
           name: Push application Docker image
           command: |
