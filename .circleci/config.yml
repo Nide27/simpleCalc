@@ -75,12 +75,12 @@ jobs:
             pip install docker-compose==1.15.0
       - run:
           name: Build Docker image
-          command: docker build -t $DOCKERHUB_USERNAME/conint_backend:latest .
+          command: docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAMEd:latest .
       - run:
           name: Push application Docker image
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker push $DOCKERHUB_USERNAME/conint_backend:latest
+            docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
 workflows:
   backend:
