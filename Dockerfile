@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
-CMD [ "python", "app.py", "--host=0.0.0.0" ]
+CMD [ "python", "src/app.py", "--host=0.0.0.0" ]
