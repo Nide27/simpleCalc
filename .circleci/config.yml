@@ -1,18 +1,18 @@
 version: 2.1
 orbs:
   python: circleci/python@1.5.0
-executors:
-  docker-publisher:
-    environment:
-      IMAGE_NAME: conint_backend
-      docker: # Each job requires specifying an executor (either docker, macos, or machine), see
+  docker: circleci/docker@2.1.2
+docker-publisher:
+  environment:
+    IMAGE_NAME: conint_backend
+    docker: # Each job requires specifying an executor (either docker, macos, or machine), see
       — image: circleci/python:latest
-      auth:
+    auth:
       username: $DOCKERHUB_USERNAME
       password: $DOCKERHUB_PASSWORD
-
+  
 jobs:
-  build-and-test:
+  test:
     docker:
       - image: cimg/python:3.10.2
     steps:
@@ -38,6 +38,14 @@ jobs:
           environment:
             PYTHONPATH: /home/circleci/project/
           command: coverage report
+    
+  build:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
 
   lint:
     docker:
@@ -54,26 +62,36 @@ jobs:
 #            PYTHONPATH: /home/circleci/project/
           command: pylint -rn src --disable=missing-docstring
 
-    deploy:
-      executor: docker-publisher
-        steps:
-        — checkout
-        — setup_remote_docker
-        — run:
-        name: Publish Docker Image to Docker Hub
-        command: |
-        echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” — password-stdin
-        docker build -t $IMAGE_NAME .
-        docker push $IMAGE_NAME:latest
+  deploy:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip=9.0.0-r1
+            pip install docker-compose==1.15.0
+      - run:
+          name: Build Docker image
+          command: docker build -t $DOCKERHUB_USERNAME/conint_backend:latest .
+      - run:
+          name: Push application Docker image
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker push $DOCKERHUB_USERNAME/conint_backend:latest
 
 workflows:
   backend:
     jobs:
       - lint
-      - build-and-test:
+      - test:
           requires:
             - lint
+      - build:
+          requires:
+            - test
       - deploy:
           requires:
-            - lint
-            - build-and-test
+            - build
