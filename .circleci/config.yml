@@ -22,9 +22,6 @@ jobs:
       - run: pip install --user pylint
       - run:
           name: Run lint
-          #          working_directory: ~/project/src
-          #          environment:
-          #            PYTHONPATH: /home/circleci/project/
           command: pylint -rn src --disable=missing-docstring
 
   test:
