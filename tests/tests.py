@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_addition(self):
         response = self.app.get('/api/add?num1={}&num2={}'.format(5, 8))
-        self.assertEqual(response.text, "13")
+        self.assertEqual(response.text, "14")
 
     def test_subtract(self):
         response = self.app.get('/api/subtract?num1={}&num2={}'.format(6, 3))
