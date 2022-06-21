@@ -79,31 +79,13 @@ jobs:
 workflows:
   backend:
     jobs:
-      - lint:
-          filters:
-            branches:
-              only:
-                - main
-                - feature
-                - develop
+      - lint
       - test:
           requires:
             - lint
-          filters:
-            branches:
-              only:
-                - main
-                - feature
-                - develop
       - build:
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - main
-                - feature
-                - develop
       - deploy:
           requires:
             - build
