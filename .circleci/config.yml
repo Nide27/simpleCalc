@@ -58,7 +58,6 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     steps:
-      - checkout
       - run:
           name: Install build
           command: pip install build
