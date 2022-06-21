@@ -106,9 +106,9 @@ workflows:
                 - main
                 - feature
                 - develop
-      -build:
-        requires:
-          - test
+      - build:
+          requires:
+            - test
           filters:
             branches:
               only:
