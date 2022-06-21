@@ -12,7 +12,7 @@ docker-publisher:
       password: $DOCKERHUB_PASSWORD
   
 jobs:
-  test:
+  build-and-test:
     docker:
       - image: cimg/python:3.10.2
     steps:
@@ -38,14 +38,6 @@ jobs:
           environment:
             PYTHONPATH: /home/circleci/project/
           command: coverage report
-    
-  build:
-    docker:
-      - image: cimg/python:3.10.2
-    steps:
-      - checkout
-      - python/install-packages:
-          pkg-manager: pip
 
   lint:
     docker:
@@ -86,12 +78,9 @@ workflows:
   backend:
     jobs:
       - lint
-      - test:
+      - build-and-test:
           requires:
             - lint
-      - build:
-          requires:
-            - test
       - deploy:
           requires:
             - build
