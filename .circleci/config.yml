@@ -64,7 +64,7 @@ jobs:
           command: pip install build
       - run:
           name: Build backend
-          command: python -m build src/
+          command: python -m build
 
 
   deploy:
