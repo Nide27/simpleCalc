@@ -12,7 +12,22 @@ docker-publisher:
       password: $DOCKERHUB_PASSWORD
   
 jobs:
-  build-and-test:
+  lint:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run: pip install --user pylint
+      - run:
+          name: Run lint
+          #          working_directory: ~/project/src
+          #          environment:
+          #            PYTHONPATH: /home/circleci/project/
+          command: pylint -rn src --disable=missing-docstring
+
+  test:
     docker:
       - image: cimg/python:3.10.2
     steps:
@@ -39,20 +54,18 @@ jobs:
             PYTHONPATH: /home/circleci/project/
           command: coverage report
 
-  lint:
+  build:
     docker:
       - image: cimg/python:3.10.2
     steps:
       - checkout
-      - python/install-packages:
-            pkg-manager: pip
-      - run: pip install --user pylint
       - run:
-          name: Run lint
-#          working_directory: ~/project/src
-#          environment:
-#            PYTHONPATH: /home/circleci/project/
-          command: pylint -rn src --disable=missing-docstring
+          name: Install build
+          command: pip install build
+      - run:
+          name: Build backend
+          command: python -m build
+
 
   deploy:
     docker:
@@ -77,10 +90,35 @@ jobs:
 workflows:
   backend:
     jobs:
-      - lint
-      - build-and-test:
+      - lint:
+          filters:
+            branches:
+              only:
+                - main
+                - feature
+                - develop
+      - test:
           requires:
             - lint
+          filters:
+            branches:
+              only:
+                - main
+                - feature
+                - develop
+      -build:
+        requires:
+          - test
+          filters:
+            branches:
+              only:
+                - main
+                - feature
+                - develop
       - deploy:
           requires:
-            - build-and-test
+            - build
+          filters:
+            branches:
+              only:
+                - main
