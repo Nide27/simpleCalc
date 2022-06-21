@@ -1,15 +1,4 @@
 version: 2.1
-orbs:
-  python: circleci/python@1.5.0
-  docker: circleci/docker@2.1.2
-docker-publisher:
-  environment:
-    IMAGE_NAME: conint_backend
-    docker: # Each job requires specifying an executor (either docker, macos, or machine), see
-      — image: circleci/python:latest
-    auth:
-      username: $DOCKERHUB_USERNAME
-      password: $DOCKERHUB_PASSWORD
   
 jobs:
   lint:
